@@ -56,7 +56,7 @@ const ImageEditor = ({ originalImage, onReset }: ImageEditorProps) => {
         // For sharpness, we apply our own algorithm (since filter:sharpen() isn't supported)
         if (adjustments.sharpness > 0) {
           // This is a simplified sharpening effect - in real apps you'd use more advanced algorithms
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const strength = adjustments.sharpness / 50;
           
           // Apply some contrast and brightness adjustment to simulate sharpening
