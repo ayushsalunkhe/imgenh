@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, Image, SlidersVertical, Upload } from 'lucide-react';
+import { SlidersVertical, Upload } from 'lucide-react';
 import './index.css';
 import ImageUploader from './components/ImageUploader';
 import ImageEditor from './components/ImageEditor';
