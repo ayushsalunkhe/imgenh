@@ -12,7 +12,7 @@ export default defineConfig({
         // Skip watermark injection if SHOW_WATERMARK is false
         if (process.env.SHOW_WATERMARK === "false") {
           return html;  // Return HTML without watermark
-        },
+        }
 
       // Keeping the transform for main.tsx in case you need it
       transform(src: string, id: string) {
