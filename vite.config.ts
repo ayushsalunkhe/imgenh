@@ -5,6 +5,74 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [
     react(),
+    {
+      name: "srcbook-error-reporter",
+
+      transformIndexHtml(html) {
+        // Skip watermark injection if SHOW_WATERMARK is false
+        if (process.env.SHOW_WATERMARK === "false") {
+          return html;  // Return HTML without watermark
+        }
+
+        // Original watermark injection logic
+        if (process.env.NODE_ENV !== "development") {
+          return [
+            {
+              tag: "style",
+              attrs: { type: "text/css" },
+              injectTo: "head",
+              children: `
+                .srcbook-watermark {
+                  position: fixed;
+                  bottom: 16px;
+                  right: 16px;
+                  background: white;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                  display: flex;
+                  align-items: center;
+                  padding: 8px 12px;
+                  z-index: 9999;
+                  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                  font-size: 14px;
+                  font-weight: bold;
+                  color: #000;
+                  gap: 8px;
+                  border: 1px solid #e6e6e6;
+                  background: linear-gradient(to bottom, #FFFFFF, #F9F9F9);
+                  cursor: pointer;
+                  transition: all 0.2s ease-in-out;
+                }
+                .srcbook-watermark:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+                .srcbook-watermark:active {
+                  transform: translateY(0);
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+                .srcbook-watermark img {
+                  width: 16px;
+                  height: 16px;
+                }
+              `,
+            },
+            {
+              tag: "script",
+              attrs: { type: "module" },
+              injectTo: "body",
+              children: `
+                const watermark = document.createElement('a');
+                watermark.href = 'https://www.srcbook.com?a_id=' + encodeURIComponent('0195a953-52cb-77e2-9547-2efc0ed8e166');
+                watermark.target = '_blank';
+                watermark.className = 'srcbook-watermark';
+                watermark.innerHTML = \`
+                  <img src="https://assets.srcbook.com/favicon.svg" alt="Srcbook Logo" />
+                  Made in Srcbook
+                \`;
+                document.body.appendChild(watermark);
+              `,
+            },
           ];
         }
 
